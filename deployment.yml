@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: v1
 kind: Namespace
 metadata:
   name: zabbix
@@ -6,7 +6,7 @@ metadata:
     name: zabbix
 ---
 kind: PersistentVolume
-apiVersion: apps/v1
+apiVersion: v1
 metadata:
   name: zabbix-mysql-data
   labels:
@@ -21,7 +21,7 @@ spec:
     path: "/data"
 ---
 kind: PersistentVolumeClaim
-apiVersion: apps/v1
+apiVersion: v1
 metadata:
   name: zabbix-mysql-data-claim
   namespace: zabbix
@@ -33,7 +33,7 @@ spec:
       storage: 1Gi
   volumeName: zabbix-mysql-data
 ---
-apiVersion: apps/v1
+apiVersion: v1
 kind: List
 metadata:
  namespace: zabbix
