@@ -38,7 +38,7 @@ kind: List
 metadata:
  namespace: zabbix
 items:
-  - apiVersion: apps/v1
+  - apiVersion: v1
     kind: Secret
     type: Opaque
     metadata:
