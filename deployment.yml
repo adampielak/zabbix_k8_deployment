@@ -104,8 +104,6 @@ spec:
     name: snmp-trap
   selector:
     name: zabbix-server
-  externalIPs:
-  - 10.200.120.114
 ---
 apiVersion: v1
 kind: Service
@@ -153,7 +151,7 @@ metadata:
     tier: zabbix-web
   namespace: zabbix
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: zabbix-web
@@ -166,7 +164,7 @@ spec:
     spec:
       containers:
         - name: zabbix-web
-          image: zabbix/zabbix-web-nginx-mysql:alpine-4.4-latest
+          image: zabbix/zabbix-web-nginx-mysql:alpine-trunk
           imagePullPolicy: Always
           ports:
           - containerPort: 80
@@ -259,7 +257,7 @@ spec:
           claimName: zabbix-mysql-data-claim
       containers:
         - name: zabbix-db
-          image: mysql:5.7
+          image: mariadb:latest
           ports:
           - containerPort: 3306
             name: mysql
@@ -296,7 +294,7 @@ metadata:
     environment: dev
   namespace: zabbix
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: zabbix-server
@@ -309,7 +307,7 @@ spec:
     spec:
       containers:
         - name: zabbix-server
-          image: zabbix/zabbix-server-mysql:alpine-4.4-latest
+          image: zabbix/zabbix-server-mysql:alpine-trunk
           imagePullPolicy: Always
           ports:
           - containerPort: 10051
@@ -358,7 +356,7 @@ spec:
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: true
         - name: zabbix-snmptraps
-          image: zabbix/zabbix-snmptraps:ubuntu-4.4-latest
+          image: zabbix/zabbix-snmptraps:alpine-trunk
           imagePullPolicy: Always
           ports:
           - containerPort: 162
@@ -382,7 +380,7 @@ metadata:
     tier: proxy
   namespace: zabbix
 spec:
-  replicas: 3 
+  replicas: 1
   selector:
     matchLabels:
       app: zabbix
@@ -395,7 +393,7 @@ spec:
     spec:
       containers:
         - name: zabbix-proxy-mysql
-          image: zabbix/zabbix-proxy-mysql:alpine-4.4-latest
+          image: zabbix/zabbix-proxy-mysql:alpine-trunk
           imagePullPolicy: Always
           ports:
           - containerPort: 10051
@@ -429,7 +427,7 @@ metadata:
     tier: java
   namespace: zabbix
 spec:
-  replicas: 3 
+  replicas: 1 
   selector:
     matchLabels:
       name: zabbix-java-gateway
@@ -442,7 +440,7 @@ spec:
     spec:
       containers:
         - name: zabbix-java-gateway
-          image: zabbix/zabbix-java-gateway:alpine-4.4-latest
+          image: zabbix/zabbix-java-gateway:alpine-trunk
           imagePullPolicy: Always
           ports:
           - containerPort: 10052
