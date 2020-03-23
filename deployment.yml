@@ -168,19 +168,26 @@ spec:
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
+              
+        - name: ZBX_SERVER_NAME
+            value: "Zabbix kubernetes"
+        - name: PHP_TZ
+            value: "Europe/Bratislava"
+        - name: MYSQL_DATABASE
+            value: "zabbix"
         - name: zabbix-web
           image: zabbix/zabbix-web-nginx-mysql:alpine-trunk
           imagePullPolicy: Always
@@ -216,28 +223,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             failureThreshold: 5
-          env:
-          - name: ZBX_SERVER_NAME
-            value: "Zabbix kubernetes"
-          - name: PHP_TZ
-            value: "Europe/Bratislava"
-          - name: MYSQL_USER
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-user
-          - name: MYSQL_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-pass
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-root-pass
-          - name: MYSQL_DATABASE
-            value: "zabbix"
+          
           volumeMounts:
           - name: zabbix-web-ssl
             mountPath: /etc/ssl/nginx
@@ -279,19 +265,21 @@ spec:
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
+        - name: MYSQL_DATABASE
+          value: "zabbix
         - name: zabbix-db
           image: mariadb:10.1
           args:
@@ -300,8 +288,7 @@ spec:
           ports:
           - containerPort: 3306
             name: mysql
-          - name: MYSQL_DATABASE
-            value: "zabbix"
+         
           volumeMounts:
            - mountPath: "/var/lib/mysql/"
              name: zabbix-mysql-data
@@ -334,19 +321,31 @@ spec:
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
+        - name: MYSQL_DATABASE
+          value: "zabbix"
+        - name: ZBX_JAVAGATEWAY_ENABLE
+          value: "true"
+        - name: ZBX_STARTJAVAPOLLERS
+          value: "1"
+        - name: ZBX_ENABLE_SNMP_TRAPS
+          value: "true"
+        - name: ZBX_STARTPROXYPOLLERS
+          value: "5"
+        - name: ZBX_PROXYCONFIGFREQUENCY
+          value: "60"
         - name: zabbix-server
           image: zabbix/zabbix-server-mysql:alpine-trunk
           imagePullPolicy: Always
@@ -364,34 +363,7 @@ spec:
               port: zabbix-trapper
             initialDelaySeconds: 15
             periodSeconds: 20
-          env:
-          - name: MYSQL_USER
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-user
-          - name: MYSQL_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-pass
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-root-pass
-          - name: MYSQL_DATABASE
-            value: "zabbix"
-          - name: ZBX_JAVAGATEWAY_ENABLE
-            value: "true"
-          - name: ZBX_STARTJAVAPOLLERS
-            value: "1"
-          - name: ZBX_ENABLE_SNMP_TRAPS
-            value: "true"
-          - name: ZBX_STARTPROXYPOLLERS
-            value: "5"
-          - name: ZBX_PROXYCONFIGFREQUENCY
-            value: "60"
+
           volumeMounts:
           - name: zabbix-db-storage
             mountPath: /var/lib/zabbix/snmptraps/
@@ -438,19 +410,19 @@ spec:
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_PASSWORD
-              name: zabbix-app
+              name: db-secret
 
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: MYSQL_ROOT_PASSWORD
-              name: zabbix-app
+              name: db-secret
         - name: zabbix-proxy-mysql
           image: zabbix/zabbix-proxy-mysql:alpine-trunk
           imagePullPolicy: Always
