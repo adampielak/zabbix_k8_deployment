@@ -183,11 +183,11 @@ spec:
               name: db-secret
               
         - name: ZBX_SERVER_NAME
-            value: "Zabbix kubernetes"
+          value: "Zabbix kubernetes"
         - name: PHP_TZ
-            value: "Europe/Bratislava"
+          value: "Europe/Bratislava"
         - name: MYSQL_DATABASE
-            value: "zabbix"
+          value: "zabbix"
         - name: zabbix-web
           image: zabbix/zabbix-web-nginx-mysql:alpine-trunk
           imagePullPolicy: Always
