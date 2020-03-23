@@ -45,9 +45,9 @@ items:
      name: db-secret
      namespace: zabbix
     data:
-     db-root-pass: "c29tZV90ZXN0X3Bhc3M="
-     db-zbx-user: "emFiYml4"
-     db-zbx-pass: "emJ4X3Bhc3N3b3Jk"
+     MYSQL_ROOT_PASSWORD: "c29tZV90ZXN0X3Bhc3M="
+     MYSQL_USER: "emFiYml4"
+     MYSQL_PASSWORD: "emJ4X3Bhc3N3b3Jk"
 ---
 apiVersion: v1
 kind: Service
@@ -163,6 +163,24 @@ spec:
         app: zabbix
     spec:
       containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
         - name: zabbix-web
           image: zabbix/zabbix-web-nginx-mysql:alpine-trunk
           imagePullPolicy: Always
@@ -256,6 +274,24 @@ spec:
          persistentVolumeClaim:
           claimName: zabbix-mysql-data-claim
       containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
         - name: zabbix-db
           image: mariadb:10.1
           args:
@@ -264,22 +300,6 @@ spec:
           ports:
           - containerPort: 3306
             name: mysql
-          env:
-          - name: MYSQL_USER
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-user
-          - name: MYSQL_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-pass
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-root-pass
           - name: MYSQL_DATABASE
             value: "zabbix"
           volumeMounts:
@@ -309,6 +329,24 @@ spec:
         app: zabbix
     spec:
       containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
         - name: zabbix-server
           image: zabbix/zabbix-server-mysql:alpine-trunk
           imagePullPolicy: Always
@@ -395,6 +433,24 @@ spec:
         app: zabbix
     spec:
       containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_PASSWORD
+              name: zabbix-app
+
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: MYSQL_ROOT_PASSWORD
+              name: zabbix-app
         - name: zabbix-proxy-mysql
           image: zabbix/zabbix-proxy-mysql:alpine-trunk
           imagePullPolicy: Always
@@ -402,24 +458,6 @@ spec:
           - containerPort: 10051
             protocol: TCP
             name: zabbix-trapper
-          env:
-          - name: MYSQL_USER
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-user
-          - name: MYSQL_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-zbx-pass
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-             secretKeyRef:
-              name: db-secret
-              key: db-root-pass
-          - name: MYSQL_DATABASE
-            value: "zabbix_proxy"
 ---
 apiVersion: apps/v1
 kind: Deployment
