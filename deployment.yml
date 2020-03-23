@@ -188,13 +188,13 @@ spec:
           value: "Europe/Bratislava"
         - name: MYSQL_DATABASE
           value: "zabbix"
-        - name: zabbix-web
+      - name: zabbix-web
           image: zabbix/zabbix-web-nginx-mysql:alpine-trunk
           imagePullPolicy: Always
           ports:
-          - containerPort: 80
+        - containerPort: 80
             name: web-http
-          - containerPort: 443
+        - containerPort: 443
             name: web-https
           resources:
            limits:
